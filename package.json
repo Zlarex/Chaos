@@ -1,0 +1,24 @@
+{
+  "name": "chaos",
+  "version": "1.0.0",
+  "description": "Private Discord Bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zlarex/Chaos.git"
+  },
+  "author": "Zhx",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Zlarex/Chaos/issues"
+  },
+  "homepage": "https://github.com/Zlarex/Chaos#readme",
+  "dependencies": {
+    "discord.js": "^12.5.3",
+    "express": "^4.17.1"
+  }
+}

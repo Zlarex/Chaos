@@ -10,10 +10,10 @@ client.prefix = '!'
 client.token = process.env.BOT_TOKEN
 
 client.once('ready', async () => {
-    // const guild = await client.guilds.fetch('473112778253795329')
-    // const channel = guild.channels.cache.get('856385377086865438')
-    // const message = await channel.messages.fetch('885908566375026738')
-    // const r1 = await guild.roles.fetch()
+    const guild = await client.guilds.fetch('473112778253795329')
+    const channel = guild.channels.cache.get('856385377086865438')
+    const message = await channel.messages.fetch('885908566375026738')
+    const r1 = await guild.roles.fetch()
 
     console.log(`[INFO] ${client.user.tag} has been connected`)
     client.user.setStatus('online')
@@ -103,7 +103,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 })
 
 client.on('messageReactionRemove', async (reaction, user) => {
-    if (!reaction.message.id == '885908566375026738') return
+    if (reaction.message.id != '885908566375026738') return
     let roleID = null
     switch (reaction.emoji.name)
     {

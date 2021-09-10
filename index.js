@@ -91,15 +91,15 @@ client.on('messageReactionAdd', async (reaction, user) => {
     if (roleID)
     {
         const member = reaction.message.guild.member(user)
+        const role = member.guild.roles.cache.get(roleID)
         try
         {
-            const role = member.guild.roles.cache.get(roleID)
             member.roles.add(role)
-            console.log(`[INFO] Role has been given to ${member.user.tag}`)
+            console.log(`[INFO] ${role.name} has been given to ${member.user.tag}`)
         }
         catch(e)
         {
-            console.log(`[INFO] Role hasn't been given to ${member.user.tag}`)
+            console.log(`[INFO] ${role.name} hasn't been given to ${member.user.tag}`)
         }
     }
 })

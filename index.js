@@ -1,3 +1,4 @@
+require('dotenv').config()
 const Discord = require('discord.js')
 const keepAlive = require('./server.js')
 
@@ -9,34 +10,66 @@ client.prefix = '!'
 client.token = process.env.BOT_TOKEN
 
 client.once('ready', async () => {
-    const guild = await client.guilds.fetch('473112778253795329')
-    const channel = guild.channels.cache.get('856385377086865438')
-    const message = await channel.messages.fetch('856395727701934080')
-    const r1 = await guild.roles.fetch()
+    // const guild = await client.guilds.fetch('473112778253795329')
+    // const channel = guild.channels.cache.get('856385377086865438')
+    // const message = await channel.messages.fetch('885908566375026738')
+    // const r1 = await guild.roles.fetch()
 
     console.log(`[INFO] ${client.user.tag} has been connected`)
     client.user.setStatus('online')
     client.user.setActivity(`${client.prefix}help`, {type: 'WATCHING'})
 })
 
-client.on('message', (message) => {
-    if (message.author.id != '490291745796390923') return
-    if (message.content == "!ping")
+client.on('message', async (message) => {
+    if (message.author.bot) return
+    if (message.author.id == '490291745796390923')
     {
-      message.channel.send("Pong!")
-      console.log(`[INFO] Message received`)
+        if (message.content == "!ping")
+        {
+            message.channel.send("Pong!")
+            console.log(`[INFO] Message received`)
+        }
+        else if (message.content == "!spawn")
+        {
+            const embed = {
+                'description': `You can access some hidden channels by acquiring the roles listed below.\n
+                📢 <@&819878763521114122> - <#790543679248138240>
+                ☄ <@&804993097573728266> - <#803257631081758751>
+                ⚔ <@&802341604966137893> - <#694735617589903401>
+                🐸 <@&805370926899920906> - <#798110430685429800>`
+            };
+            message.channel.send('🔑 __**Access Roles**__', { embed }).then(m =>{
+                m.react('📢').then(r =>
+                    r.message.react('☄').then(s =>
+                        s.message.react('⚔').then(u =>
+                            u.message.react('🐸')
+                        )
+                    )
+                )
+            });
+        }
     }
-    // const embed = {
-    //     'description': 'You can access some hidden channels by acquiring the roles listed below.\n\n📢 <@&819878763521114122> - <#790543679248138240>\n☄ <@&804993097573728266> - <#803257631081758751>\n⚔ <@&802341604966137893> - <#694735617589903401>\n🐸 <@&805370926899920906> - <#798110430685429800>\n🔱 <@&825893068363923497> - <#825892804525555722>\n🦊 <@&815384757978398722> - <#815384425172041739>'
-    //   };
-    //   message.channel.send('🔑 __**Access Roles**__', { embed }).then(m =>{
-    //       m.react('📢')
-    //       .then(r => r.message.react('☄').then(s => s.message.react('⚔').then(u => u.message.react('🐸').then(v => v.message.react('🔱').then(w => w.message.react('🦊'))))))
-    //   });
+    if (message.channel.id == '885513299859488829')
+    {
+        if (message.attachments.size == 0 &&
+            !message.content.includes('http') &&
+            !message.content.includes('https')
+        )
+        {
+            try
+            {
+                await message.delete()
+                let m = await message.channel.send(`<@${message.author.id}>, please only send the document in this channel or create the thread to discuss!`)
+                setTimeout(() => m.delete(), 3000)
+            }
+            catch (err) { console.log(`Error: ${err}`) }
+        }
+        else message.react('⭐')
+    }
 })
 
 client.on('messageReactionAdd', async (reaction, user) => {
-    if (!reaction.message.id == '856395727701934080') return
+    if (reaction.message.id != '885908566375026738') return
     let roleID = null
     switch (reaction.emoji.name)
     {
@@ -52,12 +85,8 @@ client.on('messageReactionAdd', async (reaction, user) => {
         case '🐸':
             roleID = '805370926899920906'
             break;
-        case '🔱':
-            roleID = '825893068363923497'
-            break;
-        case '🦊':
-            roleID = '815384757978398722'
-            break;
+        default:
+            return;
     }
     if (roleID)
     {
@@ -76,7 +105,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 })
 
 client.on('messageReactionRemove', async (reaction, user) => {
-    if (!reaction.message.id == '856395727701934080') return
+    if (!reaction.message.id == '885908566375026738') return
     let roleID = null
     switch (reaction.emoji.name)
     {
@@ -92,12 +121,8 @@ client.on('messageReactionRemove', async (reaction, user) => {
         case '🐸':
             roleID = '805370926899920906'
             break;
-        case '🔱':
-            roleID = '825893068363923497'
-            break;
-        case '🦊':
-            roleID = '815384757978398722'
-            break;
+        default:
+            return;
     }
     if (roleID)
     {

@@ -85,8 +85,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
         case '🐸':
             roleID = '805370926899920906'
             break;
-        default:
-            return;
     }
     if (roleID)
     {
@@ -121,8 +119,6 @@ client.on('messageReactionRemove', async (reaction, user) => {
         case '🐸':
             roleID = '805370926899920906'
             break;
-        default:
-            return;
     }
     if (roleID)
     {

@@ -22,13 +22,19 @@ client.once('ready', async () => {
     client.user.setActivity(`${client.prefix}help`, {type: 'WATCHING'})
     writeLog(`INFO: ${client.user.tag} has been connected`)
 
-    const scheduledMessage = new cron.CronJob('00 00 00 * * *', () => {
-        const embed = {
-            'description': `**${getOutputTime(2)}**
-            Here is the log file: [Click Here](${process.env.DROPBOX_LINK}&preview=${getOutputTime(1)}-log.txt)`
-        }
-        debug.send({embed})
-    })
+    const scheduledMessage = new cron.CronJob(
+        '00 00 00 * * *',
+        () => {
+            const embed = {
+                'description': `**${getOutputTime(2)}**
+                Here is the log file: [Click Here](${process.env.DROPBOX_LINK}&preview=${getOutputTime(1)}-log.txt)`
+            }
+            debug.send({embed})
+        },
+        null,
+        true,
+        "Asia/Jakarta"
+    )
 
     scheduledMessage.start()
 })

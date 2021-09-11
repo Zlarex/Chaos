@@ -8,7 +8,7 @@ const DEBUG = false
 
 var utility = module.exports = {
     getOutputTime: (isLog = 0) => {
-        const date = new Date()
+        const date = new Date().toLocaleString("en-US", {timeZone: "Asia/Jakarta"})
         let day = date.getDate().toString()
         let month = (1 + date.getMonth()).toString()
         let year = date.getFullYear().toString()

@@ -8,20 +8,26 @@ const DEBUG = false
 
 var utility = module.exports = {
     getOutputTime: (isLog = 0) => {
-        const date = new Date().toLocaleString("en-US", {timeZone: "Asia/Jakarta"})
-        let day = date.getDate().toString()
-        let month = (1 + date.getMonth()).toString()
-        let year = date.getFullYear().toString()
-        let hours = date.getHours().toString()
-        let minutes = date.getMinutes().toString()
-        let seconds = date.getSeconds().toString()
-        
-        month = month.length > 1 ? month : '0' + month
-        day = day.length > 1 ? day : '0' + day
-        hours = hours.length > 1 ? hours : '0' + hours
-        minutes = minutes.length > 1 ? minutes : '0' + minutes
-        seconds = seconds.length > 1 ? seconds : '0' + seconds
-        
+        let options = {
+            timeZone: 'Asia/Jakarta',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: 'numeric',
+        }
+        const formatter = new Intl.DateTimeFormat([], options)
+        const strtime = formatter.format(new Date())
+
+        let day = strtime[0] + strtime[1]
+        let month = strtime[3] + strtime[4]
+        let year = strtime[6] + strtime[7] + strtime[8] + strtime[9]
+
+        let hours = strtime[12] + strtime[13]
+        let minutes = strtime[15] + strtime[16]
+        let seconds = strtime[18] + strtime[19]
+
         if (isLog == 0) return `[${month}/${day}/${year} ${hours}:${minutes}:${seconds}] `
         else if (isLog == 1) return month + day + year
         else return `${month}/${day}/${year}`

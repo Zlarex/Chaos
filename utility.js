@@ -20,8 +20,8 @@ var utility = module.exports = {
         const formatter = new Intl.DateTimeFormat([], options)
         const strtime = formatter.format(new Date())
 
-        let day = strtime[0] + strtime[1]
-        let month = strtime[3] + strtime[4]
+        let month = strtime[0] + strtime[1]
+        let day = strtime[3] + strtime[4]
         let year = strtime[6] + strtime[7] + strtime[8] + strtime[9]
 
         let hours = strtime[12] + strtime[13]

@@ -86,18 +86,27 @@ client.on('message', async (message) => {
     {
         if (message.attachments.size == 0)
         {
-            try
+            let expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi
+            let regex = new RegExp(expression)
+            if (!message.content.match(regex))
             {
-                await message.delete()
-                let m = await message.channel.send(`<@${message.author.id}>, please only send the document in this channel or create the thread to discuss!`)
-                setTimeout(() => m.delete(), 5000)
-            }
-            catch (err)
-            {
-                writeLog(`ERR: ${err}`)
+                try
+                {
+                    message.delete()
+                    let m = await message.channel.send(`<@${message.author.id}>, please only send the document in this channel or create the thread to discuss!`)
+                    setTimeout(() => m.delete(), 5000)
+                }
+                catch (err)
+                {
+                    writeLog(`ERR: ${err}`)
+                }
+                finally
+                {
+                    return
+                }
             }
         }
-        else message.react('⭐')
+        message.react('⭐')
     }
 })
 

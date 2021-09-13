@@ -1,5 +1,5 @@
 require('dotenv').config()
-const cron = require('cron')
+const cron = require('node-cron')
 const Discord = require('discord.js')
 const keepAlive = require('./server.js')
 const { writeLog, getOutputTime } = require('./utility.js')
@@ -22,21 +22,17 @@ client.once('ready', async () => {
     client.user.setActivity(`${client.prefix}help`, {type: 'WATCHING'})
     writeLog(`INFO: ${client.user.tag} has been connected`)
 
-    const scheduledMessage = new cron.CronJob(
-        '0 0 * * *',
-        () => {
+    cron.schedule('0 0 * * *', () => {
             const embed = {
                 'description': `**${getOutputTime(2)}**
                 Here is the log file: [Click Here](${process.env.DROPBOX_LINK}&preview=${getOutputTime(1)}-log.txt)`
             }
             debug.send({embed})
         },
-        null,
-        true,
-        "Asia/Jakarta"
+        {
+            timezone: 'Asia/Jakarta'
+        }
     )
-
-    scheduledMessage.start()
 })
 
 client.on('message', async (message) => {
@@ -80,6 +76,10 @@ client.on('message', async (message) => {
                 Here is the log file: [Click Here](${process.env.DROPBOX_LINK}&preview=${getOutputTime(1)}-log.txt)`
             }
             message.channel.send({embed})
+        }
+        else if (message.content == '!execschedule')
+        {
+
         }
     }
     if (message.channel.id == process.env.MEDIA_CHANNEL_ID)

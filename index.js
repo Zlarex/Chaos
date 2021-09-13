@@ -23,7 +23,7 @@ client.once('ready', async () => {
     writeLog(`INFO: ${client.user.tag} has been connected`)
 
     const scheduledMessage = new cron.CronJob(
-        '00 00 00 * * *',
+        '0 0 * * *',
         () => {
             const embed = {
                 'description': `**${getOutputTime(2)}**

@@ -105,3 +105,5 @@ dist
 
 # txt
 *.txt
+
+package-lock.json

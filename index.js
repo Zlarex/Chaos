@@ -24,8 +24,7 @@ client.once('ready', async () => {
 
     cron.schedule('0 0 * * *', () => {
             const embed = {
-                'description': `**${getOutputTime(2)}**
-                Here is the log file: [Click Here](${process.env.DROPBOX_LINK}&preview=${getOutputTime(1)}-log.txt)`
+                'description': `**${getOutputTime(2)}**\nHere is the log file: [Click Here](${process.env.DROPBOX_LINK}&preview=${getOutputTime(1)}-log.txt)`
             }
             debug.send({embed})
         },
@@ -52,12 +51,7 @@ client.on('message', async (message) => {
         else if (message.content == "!spawn")
         {
             const embed = {
-                'description': `You can access some hidden channels by acquiring the roles listed below.\n
-                📢 <@&819878763521114122> - <#790543679248138240>
-                ☄ <@&804993097573728266> - <#803257631081758751>
-                ⚔ <@&802341604966137893> - <#694735617589903401>
-                🐸 <@&805370926899920906> - <#798110430685429800>
-                🛠 <@&886065284346175488> - <#886062241202442282>`
+                'description': `You can access some hidden channels by acquiring the roles listed below.\n\n📢 <@&819878763521114122> - <#790543679248138240>\n☄ <@&804993097573728266> - <#803257631081758751>\n⚔ <@&802341604966137893> - <#694735617589903401>\n🐸 <@&805370926899920906> - <#798110430685429800>\n🛠 <@&886065284346175488> - <#886062241202442282>`
             };
             message.channel.send('🔑 __**Access Roles**__', { embed }).then(m =>{
                 m.react('📢').then(r =>
@@ -72,8 +66,7 @@ client.on('message', async (message) => {
         else if (message.content == '!makelog')
         {
             const embed = {
-                'description': `**${getOutputTime(2)}**
-                Here is the log file: [Click Here](${process.env.DROPBOX_LINK}&preview=${getOutputTime(1)}-log.txt)`
+                'description': `**${getOutputTime(2)}**\nHere is the log file: [Click Here](${process.env.DROPBOX_LINK}&preview=${getOutputTime(1)}-log.txt)`
             }
             message.channel.send({embed})
         }

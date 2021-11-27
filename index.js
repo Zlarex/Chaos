@@ -21,24 +21,16 @@ client.once('ready', async () => {
     client.user.setStatus('online')
     client.user.setActivity(`${client.prefix}help`, {type: 'WATCHING'})
     writeLog(`INFO: ${client.user.tag} has been connected`)
-
-    // cron.schedule('0 0 * * *', () => {
-    //         const embed = {
-    //             'description': `**${getOutputTime(2)}**\nHere is the log file: [Click Here](${process.env.DROPBOX_LINK}&preview=${getOutputTime(1)}-log.txt)`
-    //         }
-    //         debug.send({embed})
-    //     },
-    //     {
-    //         timezone: 'Asia/Jakarta'
-    //     }
-    // )
 })
 
 client.on('message', async (message) => {
     if (message.author.bot) return
     if (message.author.id == process.env.DEVELOPER_ID)
     {
-        if (message.content.startsWith(process.env.PREFIX)) writeLog(`WARN: ${message.author.tag} (${message.author.id}) used ${message.content.split(' ')[0]} in #${message.channel.name}`)
+        if (message.content.startsWith(process.env.PREFIX))
+        {
+            writeLog(`WARN: ${message.author.tag} (${message.author.id}) used ${message.content.split(' ')[0]} in #${message.channel.name}`)
+        }
         if (message.content == "!ping")
         {
             message.channel.send('Receiving...').then(msg => {
@@ -51,126 +43,77 @@ client.on('message', async (message) => {
         else if (message.content == "!spawn")
         {
             const embed = {
-                'description': `You can access some hidden channels by acquiring the roles listed below.\n\n📢 <@&819878763521114122> - <#790543679248138240>\n☄ <@&804993097573728266> - <#803257631081758751>\n⚔ <@&802341604966137893> - <#694735617589903401>\n🐸 <@&805370926899920906> - <#798110430685429800>\n🛠 <@&886065284346175488> - <#886062241202442282>`
+                'description': `You can get some special access by acquiring the roles listed below.\n\n:loudspeaker: \`--\` Notices for the message sent in <#790543679248138240>\n:key: \`--\` Open the game channels available here`
             };
-            message.channel.send('🔑 __**Access Roles**__', { embed }).then(m =>{
-                m.react('📢').then(r =>
-                    r.message.react('☄').then(s =>
-                        s.message.react('⚔').then(u =>
-                            u.message.react('🐸')
-                        )
-                    )
-                )
-            });
+            let m = await message.channel.send('__**Special Access Roles**__', { embed })
+            await m.react(`📢`)
+            await m.react(`🔑`)
         }
-        else if (message.content == '!makelog')
-        {
-            const embed = {
-                'description': `**${getOutputTime(2)}**\nHere is the log file: [Click Here](${process.env.DROPBOX_LINK}&preview=${getOutputTime(1)}-log.txt)`
-            }
-            message.channel.send({embed})
-        }
-        else if (message.content == '!execschedule')
-        {
-
-        }
-    }
-    if (message.channel.id == process.env.MEDIA_CHANNEL_ID)
-    {
-        if (message.attachments.size == 0)
-        {
-            let expression = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi
-            let regex = new RegExp(expression)
-            if (!message.content.match(regex))
-            {
-                try
-                {
-                    message.delete()
-                    let m = await message.channel.send(`<@${message.author.id}>, please only send the document in this channel or create the thread to discuss!`)
-                    setTimeout(() => m.delete(), 5000)
-                }
-                catch (err)
-                {
-                    writeLog(`ERR: ${err}`)
-                }
-                finally
-                {
-                    return
-                }
-            }
-        }
-        message.react('⭐')
     }
 })
 
 client.on('messageReactionAdd', async (reaction, user) => {
     if (reaction.message.id != process.env.REACT_MESSAGE_ID) return
-    let roleID = null
-    switch (reaction.emoji.name)
+    const member = reaction.message.guild.member(user)
+    const idchannels = [`694735617589903401`, `803257631081758751`, `798110430685429800`, `899508691718504449`]
+    if (reaction.emoji.name == '📢')
     {
-        case '📢':
-            roleID = '819878763521114122'
-            break;
-        case '☄':
-            roleID = '804993097573728266'
-            break;
-        case '⚔':
-            roleID = '802341604966137893'
-            break;
-        case '🐸':
-            roleID = '805370926899920906'
-            break;
-        case '🛠':
-            roleID = '886065284346175488'
-            break;
+        let roles = await member.guild.roles.cache.get(`914121169135861811`)
+        member.roles.add(roles)
     }
-    if (roleID)
+    else if (reaction.emoji.name == '🔑')
     {
-        const member = reaction.message.guild.member(user)
-        const role = member.guild.roles.cache.get(roleID)
         try
         {
-            member.roles.add(role)
+            for (let id of idchannels)
+            {
+                let channel = await reaction.message.guild.channels.cache.get(id)
+                channel.createOverwrite(member, {
+                    VIEW_CHANNEL: true
+                },
+                'Assigned by Bot')
+            }
         }
-        catch(err)
-        {
-            writeLog(`ERR: ${err}`)
-        }
+        catch (e) {}
     }
 })
 
 client.on('messageReactionRemove', async (reaction, user) => {
     if (reaction.message.id != process.env.REACT_MESSAGE_ID) return
-    let roleID = null
-    switch (reaction.emoji.name)
+    const member = reaction.message.guild.member(user)
+    const idchannels = [`694735617589903401`, `803257631081758751`, `798110430685429800`, `899508691718504449`]
+    if (reaction.emoji.name == '📢')
     {
-        case '📢':
-            roleID = '819878763521114122'
-            break;
-        case '☄':
-            roleID = '804993097573728266'
-            break;
-        case '⚔':
-            roleID = '802341604966137893'
-            break;
-        case '🐸':
-            roleID = '805370926899920906'
-            break;
-        case '🛠':
-            roleID = '886065284346175488'
-            break;
+        let roles = await member.guild.roles.cache.get(`914121169135861811`)
+        member.roles.remove(roles)
     }
-    if (roleID)
+    else if (reaction.emoji.name == '🔑')
     {
-        const member = reaction.message.guild.member(user)
-        const role = member.guild.roles.cache.get(roleID)
         try
         {
-            member.roles.remove(role)
+            for (let id of idchannels)
+            {
+                let channel = await reaction.message.guild.channels.cache.get(id)
+                channel.permissionOverwrites.find(o => o.type == `member` && o.id == member.id).delete(`Unassigned by Bot`)
+            }
         }
-        catch(err)
+        catch (e) {}
+    }
+})
+
+client.on('guildMemberUpdate', async member => {
+    let status = await member.roles.cache.get(`745166579238567998`)
+    if (status)
+    {
+        const idchannels = [`694735617589903401`, `803257631081758751`, `798110430685429800`, `899508691718504449`]
+        for (let id of idchannels)
         {
-            console.log(`ERR: ${err}`)
+            try
+            {
+                let channel = await member.guild.channels.cache.get(id)
+                channel.permissionOverwrites.find(o => o.type == `member` && o.id == member.id).delete(`Muted`)
+            }
+            catch (e) {}
         }
     }
 })

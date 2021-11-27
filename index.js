@@ -22,16 +22,16 @@ client.once('ready', async () => {
     client.user.setActivity(`${client.prefix}help`, {type: 'WATCHING'})
     writeLog(`INFO: ${client.user.tag} has been connected`)
 
-    cron.schedule('0 0 * * *', () => {
-            const embed = {
-                'description': `**${getOutputTime(2)}**\nHere is the log file: [Click Here](${process.env.DROPBOX_LINK}&preview=${getOutputTime(1)}-log.txt)`
-            }
-            debug.send({embed})
-        },
-        {
-            timezone: 'Asia/Jakarta'
-        }
-    )
+    // cron.schedule('0 0 * * *', () => {
+    //         const embed = {
+    //             'description': `**${getOutputTime(2)}**\nHere is the log file: [Click Here](${process.env.DROPBOX_LINK}&preview=${getOutputTime(1)}-log.txt)`
+    //         }
+    //         debug.send({embed})
+    //     },
+    //     {
+    //         timezone: 'Asia/Jakarta'
+    //     }
+    // )
 })
 
 client.on('message', async (message) => {
